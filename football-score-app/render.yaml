@@ -5,22 +5,18 @@ services:
     plan: free
     region: oregon
     postgresMajorVersion: 16
-    # Database credentials will be auto-injected as environment variables:
-    # - DATABASE_URL (full connection string)
-    # - PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD
 
-  # Spring Boot Backend Web Service
+  # Spring Boot Backend Web Service (Native build - no Dockerfile needed)
   - type: web
     name: football-score-api
     plan: free
     region: oregon
-    runtime: docker
+    runtime: java
     repo: https://github.com/Chethan505/score
     branch: main
     rootDir: backend
-    dockerfilePath: Dockerfile
-    # Build command handled by Dockerfile
-    # Start command handled by Dockerfile ENTRYPOINT
+    buildCommand: ./mvnw -B package -DskipTests
+    startCommand: java -jar target/football-score-app-0.0.1-SNAPSHOT.jar
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -36,22 +32,14 @@ services:
         fromDatabase:
           name: football-score-db
           property: password
-      # These need to be set manually in Render dashboard (secrets):
+      # Set these as secrets in Render Dashboard:
       # - SPORTMONKS_API_TOKEN
+      # - JWT_SECRET
       # - WHATSAPP_ACCESS_TOKEN
       # - WHATSAPP_PHONE_NUMBER_ID
       # - WHATSAPP_WABA_ID
       # - WHATSAPP_WEBHOOK_VERIFY_TOKEN
       # - WHATSAPP_APP_SECRET
-      # - JWT_SECRET
-      # - FRONTEND_URL (after Vercel deploy)
+      # - FRONTEND_URL
     healthCheckPath: /actuator/health/liveness
     autoDeploy: true
-
-  # Optional: Redis (Free tier - in-memory only, no persistence)
-  # Uncomment if you want to add it
-  # - type: kv
-  #   name: football-score-redis
-  #   plan: free
-  #   region: oregon
-  #   maxmemoryPolicy: noeviction
