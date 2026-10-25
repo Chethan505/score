@@ -1,0 +1,57 @@
+services:
+  # PostgreSQL Database (Free tier - expires after 30 days)
+  - type: pserv
+    name: football-score-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: 16
+    # Database credentials will be auto-injected as environment variables:
+    # - DATABASE_URL (full connection string)
+    # - PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD
+
+  # Spring Boot Backend Web Service
+  - type: web
+    name: football-score-api
+    plan: free
+    region: oregon
+    runtime: docker
+    repo: https://github.com/Chethan505/score
+    branch: main
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    # Build command handled by Dockerfile
+    # Start command handled by Dockerfile ENTRYPOINT
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: football-score-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: football-score-db
+          property: username
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: football-score-db
+          property: password
+      # These need to be set manually in Render dashboard (secrets):
+      # - SPORTMONKS_API_TOKEN
+      # - WHATSAPP_ACCESS_TOKEN
+      # - WHATSAPP_PHONE_NUMBER_ID
+      # - WHATSAPP_WABA_ID
+      # - WHATSAPP_WEBHOOK_VERIFY_TOKEN
+      # - WHATSAPP_APP_SECRET
+      # - JWT_SECRET
+      # - FRONTEND_URL (after Vercel deploy)
+    healthCheckPath: /actuator/health/liveness
+    autoDeploy: true
+
+  # Optional: Redis (Free tier - in-memory only, no persistence)
+  # Uncomment if you want to add it
+  # - type: kv
+  #   name: football-score-redis
+  #   plan: free
+  #   region: oregon
+  #   maxmemoryPolicy: noeviction
