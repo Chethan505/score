@@ -18,7 +18,7 @@ services:
     repo: https://github.com/Chethan505/score
     branch: main
     rootDir: backend
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: Dockerfile
     # Build command handled by Dockerfile
     # Start command handled by Dockerfile ENTRYPOINT
     envVars:
