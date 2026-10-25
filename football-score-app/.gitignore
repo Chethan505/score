@@ -1,0 +1,52 @@
+# Build outputs
+/target/
+/backend/target/
+/frontend/dist/
+/frontend/node_modules/
+
+# IDE
+/.idea/
+/.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files (NEVER commit secrets)
+/backend/src/main/resources/application-local.properties
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Test reports
+/backend/target/surefire-reports/
+/backend/target/failsafe-reports/
+
+# Docker
+docker-compose.override.yml
+
+# Database
+*.sqlite
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Maven
+.mvn/timing.properties
+
+# Vercel
+.vercel
+
+# Railway
+.railway

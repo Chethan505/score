@@ -1,0 +1,41 @@
+# Football Score App - Local Development Overrides
+# COPY THIS FILE TO application-local.properties AND FILL IN YOUR VALUES
+# NEVER COMMIT application-local.properties TO GIT
+
+# Profile
+spring.profiles.active=local
+
+# Database (Local Docker)
+spring.datasource.url=jdbc:postgresql://localhost:5432/football_score
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+# Redis (Local Docker)
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
+
+# Football Provider (Sportmonks)
+football.provider=sportmonks
+sportmonks.api.token=YOUR_SPORTMONKS_API_TOKEN_HERE
+sportmonks.api.base-url=https://api.sportmonks.com/v3/football
+
+# WhatsApp (Test Credentials)
+whatsapp.enabled=true
+whatsapp.access-token=YOUR_TEST_WHATSAPP_ACCESS_TOKEN
+whatsapp.phone-number-id=YOUR_TEST_PHONE_NUMBER_ID
+whatsapp.waba-id=YOUR_TEST_WABA_ID
+whatsapp.webhook.verify-token=dev-webhook-verify-token
+whatsapp.app-secret=YOUR_TEST_APP_SECRET
+
+# JWT Secret (Generate a secure random 256-bit key)
+jwt.secret=YOUR_JWT_SECRET_AT_LEAST_32_CHARS_LONG
+jwt.access-token-expiry-minutes=15
+jwt.refresh-token-expiry-days=30
+
+# Frontend URL (for CORS)
+app.frontend-url=http://localhost:5173
+
+# Logging (More verbose for local)
+logging.level.com.example.football=DEBUG
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate.SQL=DEBUG
