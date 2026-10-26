@@ -1,5 +1,6 @@
 package com.example.football.team;
 
+import com.example.football.competition.Competition;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

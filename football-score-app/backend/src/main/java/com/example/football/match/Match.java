@@ -1,10 +1,11 @@
 package com.example.football.match;
 
+import com.example.football.competition.Competition;
+import com.example.football.team.Team;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
