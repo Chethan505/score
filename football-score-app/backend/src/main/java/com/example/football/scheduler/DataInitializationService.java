@@ -3,7 +3,6 @@ package com.example.football.scheduler;
 import com.example.football.competition.Competition;
 import com.example.football.competition.CompetitionRepository;
 import com.example.football.footballprovider.FootballDataProvider;
-import com.example.football.footballprovider.model.Competition as ProviderCompetition;
 import com.example.football.match.Season;
 import com.example.football.match.SeasonRepository;
 import com.example.football.team.Team;
@@ -57,10 +56,10 @@ public class DataInitializationService implements ApplicationRunner {
         log.info("Starting initial data synchronization");
 
         try {
-            List<ProviderCompetition> providerCompetitions = footballProvider.getCompetitions();
+            List<com.example.football.footballprovider.model.Competition> providerCompetitions = footballProvider.getCompetitions();
             log.info("Fetched {} competitions from provider", providerCompetitions.size());
 
-            for (ProviderCompetition providerComp : providerCompetitions) {
+            for (com.example.football.footballprovider.model.Competition providerComp : providerCompetitions) {
                 syncCompetition(providerComp);
             }
 
@@ -71,7 +70,7 @@ public class DataInitializationService implements ApplicationRunner {
         }
     }
 
-    private void syncCompetition(ProviderCompetition providerComp) {
+    private void syncCompetition(com.example.football.footballprovider.model.Competition providerComp) {
         Competition competition = competitionRepository.findByProviderCompetitionId(providerComp.providerId())
                 .orElseGet(() -> {
                     Competition newComp = Competition.builder()

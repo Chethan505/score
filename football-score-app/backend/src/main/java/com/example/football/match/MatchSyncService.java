@@ -5,7 +5,6 @@ import com.example.football.event.MatchEventRepository;
 import com.example.football.footballprovider.Fixture;
 import com.example.football.footballprovider.FootballDataProvider;
 import com.example.football.footballprovider.model.MatchDetails;
-import com.example.football.footballprovider.model.MatchEvent as ProviderMatchEvent;
 import com.example.football.notification.Notification;
 import com.example.football.notification.NotificationRepository;
 import com.example.football.notification.NotificationService;
@@ -271,14 +270,14 @@ public class MatchSyncService {
 
         MatchDetails details = footballProvider.getMatchDetails(match.getProviderMatchId());
         if (details != null && details.events() != null) {
-            List<ProviderMatchEvent> newGoals = details.events().stream()
+            List<com.example.football.footballprovider.model.MatchEvent> newGoals = details.events().stream()
                     .filter(e -> "GOAL".equals(e.type()))
                     .filter(e -> homeTeamScored 
                             ? match.getHomeTeam().getProviderTeamId().equals(e.teamProviderId())
                             : match.getAwayTeam().getProviderTeamId().equals(e.teamProviderId()))
                     .toList();
 
-            for (ProviderMatchEvent goal : newGoals) {
+            for (com.example.football.footballprovider.model.MatchEvent goal : newGoals) {
                 if (!matchEventRepository.existsByMatchIdAndProviderEventId(match.getId(), goal.providerId())) {
                     notificationService.createGoalNotification(match, goal, homeTeamScored, newHomeScore, newAwayScore);
                 }
@@ -300,7 +299,7 @@ public class MatchSyncService {
             return;
         }
 
-        for (ProviderMatchEvent providerEvent : details.events()) {
+        for (com.example.football.footballprovider.model.MatchEvent providerEvent : details.events()) {
             if (!matchEventRepository.existsByMatchIdAndProviderEventId(match.getId(), providerEvent.providerId())) {
                 saveMatchEvent(match, providerEvent);
                 handleSpecificEvent(match, providerEvent);
@@ -308,7 +307,7 @@ public class MatchSyncService {
         }
     }
 
-    private MatchEvent saveMatchEvent(Match match, ProviderMatchEvent providerEvent) {
+    private MatchEvent saveMatchEvent(Match match, com.example.football.footballprovider.model.MatchEvent providerEvent) {
         Team team = null;
         if (providerEvent.teamProviderId() != null) {
             team = teamRepository.findByProviderTeamId(providerEvent.teamProviderId()).orElse(null);
@@ -331,7 +330,7 @@ public class MatchSyncService {
         return matchEventRepository.save(event);
     }
 
-    private void handleSpecificEvent(Match match, ProviderMatchEvent event) {
+    private void handleSpecificEvent(Match match, com.example.football.footballprovider.model.MatchEvent event) {
         String eventType = event.type();
         boolean shouldNotify = false;
         String template = null;

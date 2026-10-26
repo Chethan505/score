@@ -7,7 +7,6 @@ import com.example.football.favorite.FavoriteMatchRepository;
 import com.example.football.favorite.FavoriteTeam;
 import com.example.football.favorite.FavoriteTeamRepository;
 import com.example.football.match.Match;
-import com.example.football.footballprovider.model.MatchEvent as ProviderMatchEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,7 +68,7 @@ public class NotificationService {
         }
     }
 
-    public void createGoalNotification(Match match, ProviderMatchEvent goal, boolean homeTeamScored, int homeScore, int awayScore) {
+    public void createGoalNotification(Match match, com.example.football.footballprovider.model.MatchEvent goal, boolean homeTeamScored, int homeScore, int awayScore) {
         Set<User> users = getUsersToNotify(match);
 
         for (User user : users) {
@@ -111,7 +110,7 @@ public class NotificationService {
         }
     }
 
-    public void createEventNotification(Match match, ProviderMatchEvent event, String templateName) {
+    public void createEventNotification(Match match, com.example.football.footballprovider.model.MatchEvent event, String templateName) {
         Set<User> users = getUsersToNotify(match, event);
 
         for (User user : users) {
@@ -176,7 +175,7 @@ public class NotificationService {
         return users;
     }
 
-    private Set<User> getUsersToNotify(Match match, ProviderMatchEvent event) {
+    private Set<User> getUsersToNotify(Match match, com.example.football.footballprovider.model.MatchEvent event) {
         Set<User> users = getUsersToNotify(match);
 
         if (event.teamProviderId() != null) {
